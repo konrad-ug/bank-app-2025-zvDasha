@@ -9,21 +9,18 @@ class Account:
     def outcoming_transfer(self, amount):
         if amount > 0 and amount <= self.balance:
             self.balance -= amount
-    
+
 
     def express_outgoing_transfer(self, amount):
-        from src.personal_account import PersonalAccount
-        from src.company_account import CompanyAccount
-
-        if isinstance(self, PersonalAccount):
-            fee = 1.0
-        elif isinstance(self, CompanyAccount):
-            fee = 5.0
-        else:
-            raise ValueError("Nieznany typ konta")
         if amount <= 0:
             return
+        fee = self.express_transfer_fee()
 
-        if amount > 0 and self.balance - amount - fee >= -fee:
-            self.balance -= (amount + fee)
+        if self.balance < amount:
+            self.balance = -fee
+            return
+
+        self.balance -= (amount + fee)
+    
+
     
