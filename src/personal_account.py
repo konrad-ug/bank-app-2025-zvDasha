@@ -32,3 +32,6 @@ class PersonalAccount(Account):
         if year is None:
             return False
         return year > 1960
+
+    def express_transfer_fee(self):
+        return 1.0
