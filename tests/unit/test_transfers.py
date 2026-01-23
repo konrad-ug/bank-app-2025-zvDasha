@@ -5,7 +5,7 @@ class TestTransfers:
     # def test_incoming_transfer(self):
     #     assert account.balance == 100.0
 
-#ZADANIE 6 (incoming_outcoming)
+# testy incoming/outcoming
 
     def test_incoming_transfer(self):
         account = PersonalAccount("Alice", "Johnson", "12345678901")
@@ -77,4 +77,62 @@ class TestTransfers:
         account.balance = 100
         account.express_outgoing_transfer(-50)
         assert account.balance == 100 
+
+
+# testy Historia operacji
+
+    def test_history_incoming_transfer(self):
+        account = PersonalAccount("Alice", "Johnson", "12345678901")
+        account.incoming_transfer(500)
+        assert account.history == [500.0]
+
+    def test_history_outcoming_transfer(self):
+        account = PersonalAccount("Bob", "Smith", "12345678901")
+        account.balance = 100
+        account.outcoming_transfer(30)
+        assert account.history == [-30.0]
+
+    def test_history_multiple_operations(self):
+        account = PersonalAccount("Charlie", "Brown", "12345678901")
+        account.incoming_transfer(500)
+        account.balance = 500
+        account.outcoming_transfer(200)
+        assert account.history == [500.0, -200.0]
+
+    def test_history_express_transfer_personal(self):
+        account = PersonalAccount("David", "Lee", "12345678901")
+        account.balance = 100
+        account.express_outgoing_transfer(50)
+        assert account.history == [-50.0, -1.0]
+
+    def test_history_express_transfer_company(self):
+        account = CompanyAccount("TechCorp", "1234567890")
+        account.balance = 100
+        account.express_outgoing_transfer(50)
+        assert account.history == [-50.0, -5.0]
+
+    def test_history_complex_scenario(self):
+        account = PersonalAccount("Eve", "White", "12345678901")
+        account.incoming_transfer(500)
+        account.balance = 500
+        account.outcoming_transfer(100)
+        account.express_outgoing_transfer(200)
+        assert account.history == [500.0, -100.0, -200.0, -1.0]
+
+    def test_history_insufficient_balance_express(self):
+        account = PersonalAccount("Frank", "Black", "12345678901")
+        account.balance = 20
+        account.express_outgoing_transfer(100)
+        assert account.history == [-100.0, -1.0] 
+
+    def test_history_insufficient_balance_regular(self):
+        account = PersonalAccount("Grace", "Green", "12345678901")
+        account.balance = 20
+        account.outcoming_transfer(100)
+        assert account.history == []
+
+    def test_history_negative_incoming_ignored(self):
+        account = PersonalAccount("Henry", "Blue", "12345678901")
+        account.incoming_transfer(-50)
+        assert account.history == []
     
