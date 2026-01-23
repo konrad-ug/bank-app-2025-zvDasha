@@ -65,4 +65,16 @@ class TestTransfers:
         account.balance = 140
         account.express_outgoing_transfer(150)
         assert account.balance == -5  
+
+    def test_express_transfer_zero_amount(self):
+        account = PersonalAccount("John", "Doe", "12345678901")
+        account.balance = 100
+        account.express_outgoing_transfer(0)
+        assert account.balance == 100 
+
+    def test_express_transfer_negative_amount(self):
+        account = PersonalAccount("Jane", "Doe", "12345678901")
+        account.balance = 100
+        account.express_outgoing_transfer(-50)
+        assert account.balance == 100 
     
