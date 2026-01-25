@@ -24,8 +24,7 @@ class PersonalAccount(Account):
         m = int(self.pesel[2:4])
         if m > 12:
             return 2000 + y
-        else:
-            return 1900 + y
+        return 1900 + y
 
     def is_born_after_1960(self):
         year = self.get_birth_year_from_pesel()
@@ -37,7 +36,7 @@ class PersonalAccount(Account):
         return 1.0
     
     def submit_for_loan(self, amount):
-        
+    
         if len(self.history) >= 3 and all(t > 0 for t in self.history[-3:]):
             self.balance += amount
             self.history.append(amount)
