@@ -35,3 +35,17 @@ class PersonalAccount(Account):
 
     def express_transfer_fee(self):
         return 1.0
+    
+    def submit_for_loan(self, amount):
+        
+        if len(self.history) >= 3 and all(t > 0 for t in self.history[-3:]):
+            self.balance += amount
+            self.history.append(amount)
+            return True
+        
+        if len(self.history) >= 5 and sum(self.history[-5:]) > amount:
+            self.balance += amount
+            self.history.append(amount)
+            return True
+            
+        return False
