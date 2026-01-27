@@ -5,7 +5,7 @@ name: unit tests
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "feature/microservices"]
   pull_request:
     branches: ["main"]
 
@@ -27,8 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # ЗМІНА 1: Додано coverage до списку встановлення
-          pip install flake8 pytest coverage
+          pip install flake8 pytest coverage flask requests
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Lint with flake8
@@ -38,7 +37,12 @@ jobs:
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
+      - name: Start Flask API
+        run: |
+          python -m flask --app app/api.py run &
+          sleep 5
+
       - name: Test with pytest and Code Coverage
         run: |
-          python3 -m coverage run --source=src -m pytest
-          python3 -m coverage report --fail-under=100
+          python -m coverage run --source=src -m pytest
+          python -m coverage report --fail-under=100
