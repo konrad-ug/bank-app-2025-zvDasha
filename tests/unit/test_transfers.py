@@ -1,11 +1,20 @@
 from src.personal_account import PersonalAccount
 from src.company_account import CompanyAccount
+import pytest
 
 class TestTransfers:
     # def test_incoming_transfer(self):
     #     assert account.balance == 100.0
 
 # testy incoming/outcoming
+
+    @pytest.fixture(autouse=True)
+    def mock_gov_api(self, mocker):
+        mock = mocker.patch("src.company_account.requests.get")
+        mock.return_value.status_code = 200
+        mock.return_value.json.return_value = {
+            "result": {"subject": {"statusVat": "Czynny"}}
+        }
 
     def test_incoming_transfer(self):
         account = PersonalAccount("Alice", "Johnson", "12345678901")
