@@ -22,14 +22,12 @@ jobs:
           pip install flask requests pytest pytest-mock faker
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: Start flask
+      - name: Start Flask and Execute API tests
         run: |
           export FLASK_APP=app/api.py
           export FLASK_ENV=development
           export PYTHONPATH=$GITHUB_WORKSPACE
-          flask run &
-          sleep 5  # Це обов'язково, щоб сервер встиг запуститися перед тестами
 
-      - name: Execute API tests
-        run: |
+          flask run &
+          sleep 5
           python3 -m pytest tests/api
