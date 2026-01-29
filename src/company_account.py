@@ -58,3 +58,6 @@ class CompanyAccount(Account):
         self.balance += amount
         self.history.append(amount) 
         return True
+    
+    def _history_message_prefix(self):
+        return "Company account history"
