@@ -39,6 +39,16 @@ jobs:
           export FLASK_ENV=development
           export PYTHONPATH=$GITHUB_WORKSPACE
           flask run &
+
+          echo "Waiting for Flask to start..."
+          for i in {1..30}; do
+            if curl -s http://127.0.0.1:5000/api/accounts > /dev/null 2>&1; then
+              echo "Flask is ready!"
+              break
+            fi
+            echo "Attempt $i: Flask not ready yet..."
+            sleep 1
+          done
       - name: Execute API tests
         run: |
           python3 -m pytest tests/perf
