@@ -39,27 +39,7 @@ jobs:
           export FLASK_ENV=development
           export PYTHONPATH=$GITHUB_WORKSPACE
           flask run > flask.log 2>&1 &
-          python - <<'PY'
-          import socket
-          import time
-          import sys
-
-          host, port = "127.0.0.1", 5000
-          for _ in range(60):
-              try:
-                  with socket.create_connection((host, port), timeout=1):
-                      print("Flask is up")
-                      sys.exit(0)
-              except OSError:
-                  time.sleep(1)
-
-          print("Flask failed to start")
-          sys.exit(1)
-          PY
-          if [ $? -ne 0 ]; then
-            cat flask.log
-            exit 1
-          fi
+          sleep 5
       - name: Execute API tests
         run: |
           python3 -m pytest tests/perf
