@@ -48,3 +48,6 @@ class PersonalAccount(Account):
             return True
             
         return False
+    
+    def _history_message_prefix(self):
+        return "Personal account history"
