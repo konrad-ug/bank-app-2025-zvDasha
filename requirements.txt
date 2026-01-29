@@ -3,3 +3,4 @@ coverage==6.5.0
 flask
 requests
 pytest-mock
+faker==15.3.0
