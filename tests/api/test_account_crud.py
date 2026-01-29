@@ -49,3 +49,12 @@ def test_delete_account():
     assert del_response.status_code == 200
     get_response = requests.get(f"{URL}/{unique_pesel}")
     assert get_response.status_code == 404
+
+def test_create_duplicate_account():
+    unique_pesel = "06923847512"
+    payload = {"name": "Teresa", "surname": "Dor", "pesel": unique_pesel}
+    requests.post(URL, json=payload)
+    response = requests.post(URL, json=payload)
+    
+    assert response.status_code == 409
+    assert response.json()["message"] == "An account with this PESEL number already exists."
