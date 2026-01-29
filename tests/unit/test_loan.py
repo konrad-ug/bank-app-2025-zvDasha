@@ -1,7 +1,7 @@
 import pytest
+from unittest.mock import patch
 from src.personal_account import PersonalAccount
 from src.company_account import CompanyAccount
-
 
 # testy o nadaniu kredytu dla PersonalAccount
 @pytest.fixture
@@ -41,7 +41,12 @@ def test_rejected_loan_not_in_history(personal_loan):
 # testy o nadaniu kredytu dla CompanyAccount
 @pytest.fixture
 def company_loan():
-    return CompanyAccount("New Company", "1234567890")
+    with patch('src.company_account.requests.get') as mock_get:
+        mock_get.return_value.status_code = 200
+        mock_get.return_value.json.return_value = {
+            "result": {"subject": {"statusVat": "Czynny"}}
+        }
+        return CompanyAccount("New Company", "1234567890")
 
 @pytest.mark.parametrize("balance, history, loan_amount, expected_result", [
     (2000, [-1775], 1000, True),
