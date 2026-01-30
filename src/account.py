@@ -36,8 +36,7 @@ class Account:
             "balance": self.balance,
             "history": self.history
         }
-        self.history.append(-amount)        
-        self.history.append(-fee)         
+
     
 
     def send_history_via_email(self, email_address: str) -> bool:

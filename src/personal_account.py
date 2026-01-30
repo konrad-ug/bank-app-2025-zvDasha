@@ -32,15 +32,6 @@ class PersonalAccount(Account):
             return False
         return year > 1960
 
-    def to_dict(self):
-        data = super().to_dict()
-        data.update({
-            "first_name": self.first_name,
-            "last_name": self.last_name,
-            "pesel": self.pesel
-        })
-        return data
-
     def express_transfer_fee(self):
         return 1.0
     
@@ -58,5 +49,14 @@ class PersonalAccount(Account):
             
         return False
     
+    def to_dict(self):
+        data = super().to_dict()
+        data.update({
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "pesel": self.pesel
+        })
+        return data
+
     def _history_message_prefix(self):
         return "Personal account history"
