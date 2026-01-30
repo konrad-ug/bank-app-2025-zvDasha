@@ -59,5 +59,13 @@ class CompanyAccount(Account):
         self.history.append(amount) 
         return True
     
+    def to_dict(self):
+        data = super().to_dict()
+        data.update({
+            "company_name": self.company_name,
+            "nip": self.nip
+        })
+        return data
+    
     def _history_message_prefix(self):
         return "Company account history"

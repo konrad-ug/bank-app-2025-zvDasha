@@ -22,16 +22,12 @@ class TestPerformance:
                 "surname": "Tester",
                 "pesel": pesel
             }
-            try:
-                resp_create = session.post(self.BASE_URL, json=payload, timeout=self.TIMEOUT)
-                assert resp_create.status_code == 201, f"Iteration {i}: Failed to create"
-            except requests.Timeout:
-                pytest.fail(f"Create account exceeded {self.TIMEOUT}s at iteration {i}")
-            try:
-                resp_delete = session.delete(f"{self.BASE_URL}/{pesel}", timeout=self.TIMEOUT)
-                assert resp_delete.status_code == 200, f"Iteration {i}: Failed to delete"
-            except requests.Timeout:
-                pytest.fail(f"Delete account exceeded {self.TIMEOUT}s at iteration {i}")
+
+            resp_create = session.post(self.BASE_URL, json=payload, timeout=self.TIMEOUT)
+            assert resp_create.status_code == 201, f"Iteration {i}: Failed to create"
+
+            resp_delete = session.delete(f"{self.BASE_URL}/{pesel}", timeout=self.TIMEOUT)
+            assert resp_delete.status_code == 200, f"Iteration {i}: Failed to delete"
 
     def test_perf_create_transfer_loop(self, session):
         pesel = self._generate_pesel()
@@ -46,17 +42,15 @@ class TestPerformance:
 
         transfer_amount = 10
         transfer_payload = {"amount": transfer_amount, "type": "incoming"}
+
         try:
             for i in range(100):
-                try:
-                    resp = session.post(
-                        f"{self.BASE_URL}/{pesel}/transfer", 
-                        json=transfer_payload, 
-                        timeout=self.TIMEOUT
-                    )
-                    assert resp.status_code == 200
-                except requests.Timeout:
-                    pytest.fail(f"Transfer exceeded {self.TIMEOUT}s at iteration {i}")
+                resp = session.post(
+                    f"{self.BASE_URL}/{pesel}/transfer", 
+                    json=transfer_payload, 
+                    timeout=self.TIMEOUT
+                )
+                assert resp.status_code == 200
 
             resp_get = session.get(f"{self.BASE_URL}/{pesel}", timeout=self.TIMEOUT)
             assert resp_get.status_code == 200

@@ -28,8 +28,15 @@ class Account:
             return
 
         self.balance -= (amount + fee)
-        self.history.append(-amount)        
-        self.history.append(-fee)         
+        self.history.append(-amount)
+        self.history.append(-fee)
+
+    def to_dict(self):
+        return {
+            "balance": self.balance,
+            "history": self.history
+        }
+
     
 
     def send_history_via_email(self, email_address: str) -> bool:
