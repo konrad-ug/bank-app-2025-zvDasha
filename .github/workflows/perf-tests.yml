@@ -38,7 +38,7 @@ jobs:
           export FLASK_APP=app.api:app
           export FLASK_ENV=development
           export PYTHONPATH=$GITHUB_WORKSPACE
-          flask run > flask.log 2>&1 &
+          flask run &
           sleep 5
       - name: Execute API tests
         run: |
