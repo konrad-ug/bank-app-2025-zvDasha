@@ -116,6 +116,7 @@ def save_accounts():
 
 @app.route("/api/accounts/load", methods=['POST'])
 def load_accounts():
+    registry.accounts.clear()
     registry.accounts = account_repository.load_all()
     return jsonify({"message": "Accounts loaded successfully"}), 200
 
